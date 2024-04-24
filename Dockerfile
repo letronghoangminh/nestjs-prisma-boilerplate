@@ -13,5 +13,5 @@ RUN npx prisma generate
 
 RUN NODE_OPTIONS="--max-old-space-size=8192" npm run build
 
+ENTRYPOINT ["sh", "-c", "npx prisma migrate deploy && npm run start:prod"]
 
-ENTRYPOINT ["npm", "run", "start:prod"]
