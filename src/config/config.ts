@@ -1,7 +1,7 @@
 export default () => ({
   app: {
     env: process.env.APP_ENV || 'development',
-    port: parseInt(process.env.APP_PORT, 10) || 3000,
+    port: parseInt(process.env.PORT, 10) || 3000,
     root: process.env.APPLICATION_ROOT,
   },
   swagger: {
