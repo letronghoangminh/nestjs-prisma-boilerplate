@@ -15,11 +15,12 @@ import {
 import * as argon from 'argon2';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { Prisma, User } from '@prisma/client';
-import { genRandomString } from 'src/helpers/helpers';
+import { Prisma } from '@prisma/client';
+import { genRandomString, PlainToInstance } from 'src/helpers/helpers';
 import { pick } from 'lodash';
 import { ErrorMessages } from 'src/helpers/helpers';
 import { MailService } from 'src/mail/mail.service';
+import { UserModel } from 'src/user/model/user.model';
 
 @Injectable()
 export class AuthService {
@@ -45,7 +46,7 @@ export class AuthService {
         },
       });
 
-      return this.signToken(user);
+      return this.signToken(PlainToInstance(UserModel, user));
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -76,7 +77,7 @@ export class AuthService {
     if (!passwordMatches)
       throw new ForbiddenException(ErrorMessages.AUTH.CREDENTIALS_INCORRECT);
 
-    return this.signToken(user);
+    return this.signToken(PlainToInstance(UserModel, user));
   }
 
   async verify(
@@ -167,7 +168,7 @@ export class AuthService {
   }
 
   async signToken(
-    user: User,
+    user: UserModel,
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const pickedFields: string[] = ['id', 'email', 'name', 'role', 'username'];
     const payload = pick(user, pickedFields);

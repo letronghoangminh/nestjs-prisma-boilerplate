@@ -9,7 +9,7 @@ COPY prisma ./
 
 COPY . .
 
-RUN npx prisma generate
+# RUN npx prisma generate
 
 RUN NODE_OPTIONS="--max-old-space-size=8192" npm run build
 

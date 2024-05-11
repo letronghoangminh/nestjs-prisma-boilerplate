@@ -9,6 +9,10 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   const configService = app.get(ConfigService);
 
+  app.use('/health', (_req, res) => {
+    res.sendStatus(200);
+  });
+
   const swaggerConfig = new DocumentBuilder()
     .setTitle('NestJS Prisma Boilerplate')
     .setDescription('NestJS Prisma Boilerplate API Documentation')

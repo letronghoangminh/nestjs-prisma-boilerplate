@@ -18,7 +18,6 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { AdminGuard, UserGuard } from 'src/auth/guard/auth.guard';
 import { APISummaries } from 'src/helpers/helpers';
@@ -26,9 +25,9 @@ import { PageDto } from 'src/prisma/helper/prisma.helper';
 import { UpdateUserDto } from './dto/user.dto';
 import { UserModel } from './model/user.model';
 import { UserService } from './user.service';
-import { VerifiyGuard } from 'src/auth/guard/verify.guard';
+import { VerifyGuard } from 'src/auth/guard/verify.guard';
 
-type UserType = Pick<User, 'role' | 'id' | 'username' | 'email'>;
+type UserType = Pick<UserModel, 'role' | 'id' | 'username' | 'email'>;
 
 @ApiTags('USER')
 @Controller('users')
@@ -67,7 +66,7 @@ export class UserController {
   @ApiOperation({ summary: APISummaries.USER })
   @ApiOkResponse({ type: UserModel })
   @ApiBearerAuth()
-  @UseGuards(UserGuard, VerifiyGuard)
+  @UseGuards(UserGuard, VerifyGuard)
   @Put(':username')
   updateUser(
     @Param('username') username: string,
