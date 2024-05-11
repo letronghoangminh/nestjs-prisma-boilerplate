@@ -15,7 +15,6 @@ import {
 import * as argon from 'argon2';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { Prisma } from '@prisma/client';
 import { genRandomString, PlainToInstance } from 'src/helpers/helpers';
 import { pick } from 'lodash';
 import { ErrorMessages } from 'src/helpers/helpers';
@@ -48,11 +47,6 @@ export class AuthService {
 
       return this.signToken(PlainToInstance(UserModel, user));
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          throw new ForbiddenException('Credentials taken');
-        }
-      }
       throw error;
     }
   }
